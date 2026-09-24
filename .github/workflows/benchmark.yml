@@ -1,0 +1,44 @@
+name: Run benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      seeds:
+        description: "Seeds to run (space separated)"
+        default: "0 1 2"
+      tools:
+        description: "Tools: pymc meridian"
+        default: "pymc meridian"
+
+permissions:
+  contents: write
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Run
+        env:
+          TF_CPP_MIN_LOG_LEVEL: "3"
+        run: python run.py --tools ${{ inputs.tools }} --seeds ${{ inputs.seeds }} --draws 1000 --tune 1000 --chains 4
+
+      - name: Report
+        run: python report.py
+
+      - name: Commit results
+        run: |
+          git config user.name "vjthecoder"
+          git config user.email "vjthecoder@gmail.com"
+          git add results README.md
+          git diff --cached --quiet || git commit -m "Update benchmark results"
+          git push
