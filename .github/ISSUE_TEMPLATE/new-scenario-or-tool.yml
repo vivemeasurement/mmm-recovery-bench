@@ -1,0 +1,17 @@
+name: Propose a scenario or tool
+description: Suggest a new failure mode to test, or another MMM library to benchmark
+labels: ["proposal"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Type
+      options: [New scenario, New tool, Scoring change]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What should we test, and why does it matter in practice?
+    validations:
+      required: true
