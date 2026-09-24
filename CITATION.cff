@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite it as below."
+title: "MMM Recovery Bench: can open-source marketing mix models recover a known truth?"
+authors:
+  - family-names: Velpula
+    given-names: Vijay
+repository-code: "https://github.com/vivemeasurement/mmm-recovery-bench"
+license: MIT
+version: 0.1.0
+date-released: 2026-09-24
