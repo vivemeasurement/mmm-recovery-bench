@@ -1,0 +1,1 @@
+"""MMM recovery benchmark."""
