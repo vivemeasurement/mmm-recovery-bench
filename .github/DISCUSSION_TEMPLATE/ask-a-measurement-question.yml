@@ -1,0 +1,30 @@
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask anything about marketing measurement: MMM priors, adstock, saturation, lift tests, geo experiments, or explaining results to finance.
+        Good questions may be answered in a Vive Measurement post or Short (never with your name unless you say so).
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What are you trying to decide or understand?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Tool, data size (weeks, geos, channels), what you've tried. Please don't share client names or confidential numbers.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Marketing mix modeling
+        - Geo experiments / lift tests
+        - Causal inference
+        - Reporting to stakeholders
+        - Something else
