@@ -1,0 +1,33 @@
+name: Build report
+
+on:
+  push:
+    paths:
+      - "results/results.csv"
+      - "report.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install numpy==2.3.5 pandas==2.3.3 matplotlib==3.10.9
+
+      - run: python report.py
+
+      - name: Commit chart and tables
+        run: |
+          git config user.name "vjthecoder"
+          git config user.email "vjthecoder@gmail.com"
+          git add results README.md
+          git diff --cached --quiet || git commit -m "Rebuild chart and results table"
+          git push
