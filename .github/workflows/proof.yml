@@ -1,0 +1,72 @@
+name: proof-notebooks
+
+# Builds the proof notebooks that back Vive Measurement posts.
+# Run it by hand from the Actions tab: pick a notebook (or all) and a seed count.
+on:
+  workflow_dispatch:
+    inputs:
+      proof:
+        description: "Notebook id (file name in proofs/src without .py), or all"
+        required: true
+        default: all
+      seeds:
+        description: "Simulated brands per notebook (200 for publishing, 5 for a quick check)"
+        required: true
+        default: "200"
+      commit:
+        description: "Commit the results back to main"
+        type: boolean
+        default: true
+  pull_request:
+    paths:
+      - "proofs/**"
+      - ".github/workflows/proof.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            proofs/requirements.txt
+
+      - name: Install
+        run: |
+          pip install -r requirements.txt -r proofs/requirements.txt
+          python -m ipykernel install --user --name python3
+
+      - name: Run notebooks
+        env:
+          PROOF: ${{ github.event.inputs.proof || 'all' }}
+          SEEDS: ${{ github.event.inputs.seeds || '5' }}
+        run: python proofs/run_proof.py "$PROOF" --seeds "$SEEDS"
+
+      - name: Summary with links for the Stream tab
+        run: python proofs/run_proof.py --summary >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: proofs
+          path: proofs/**/*.ipynb
+          if-no-files-found: error
+
+      - name: Commit results
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.commit == 'true'
+        run: |
+          git config user.name "vjthecoder"
+          git config user.email "vjthecoder@gmail.com"
+          git add proofs
+          git diff --cached --quiet && exit 0
+          git commit -m "Refresh proof notebooks"
+          git pull --rebase origin main
+          git push
