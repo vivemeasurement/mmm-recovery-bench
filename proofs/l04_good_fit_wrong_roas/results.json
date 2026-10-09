@@ -1,0 +1,20 @@
+{
+  "id": "l04_good_fit_wrong_roas",
+  "title": "Lesson 4: a great fit is not a correct channel split",
+  "kind": "lesson",
+  "verdict": "n/a (lesson)",
+  "detail": "median R-squared 0.94 with median channel-effect error 25%; 3% of seeds crossed R-squared >= 0.95 and error >= 25%",
+  "seeds": 200,
+  "config": {
+    "seeds": 200,
+    "weeks": 156,
+    "shared": 0.95,
+    "noise_sd": 350.0,
+    "good_fit_r2": 0.95,
+    "wrong_split_error": 0.25
+  },
+  "median_r2": 0.939,
+  "median_error": 0.2503,
+  "share_good_fit_wrong_split": 0.03,
+  "run_at_utc": "2026-10-09 19:16"
+}

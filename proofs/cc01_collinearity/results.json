@@ -1,0 +1,35 @@
+{
+  "id": "cc01_collinearity",
+  "title": "Claim Check #1: does a 1% random change in spend break collinearity?",
+  "kind": "claim_check",
+  "verdict": "not reproduced",
+  "detail": "median error stayed at 18% even at 5% jitter (none: 25%)",
+  "seeds": 200,
+  "config": {
+    "seeds": 200,
+    "weeks": 156,
+    "shared": 0.95,
+    "jitter_levels": [
+      0.0,
+      0.01,
+      0.02,
+      0.05
+    ],
+    "noise_sd": 350.0,
+    "premise_min_error": 0.15,
+    "confirm_ratio": 0.5
+  },
+  "median_error": {
+    "0%": 0.2503,
+    "1%": 0.2373,
+    "2%": 0.2258,
+    "5%": 0.1833
+  },
+  "median_max_vif": {
+    "0%": 14.3,
+    "1%": 14.0,
+    "2%": 13.6,
+    "5%": 10.8
+  },
+  "run_at_utc": "2026-10-09 19:16"
+}
