@@ -12,13 +12,17 @@ We simulate weekly sales where the true return on every channel is known, fit Py
 ## What we found
 
 <!-- findings:start -->
-1. **On clean data, PyMC-Marketing is sharper.** Typical ROAS error was 5% against Meridian's 19%, with intervals half as wide.
-2. **Meridian degrades more gracefully.** Its ROI priors kept typical error between 13% and 22% in every scenario. PyMC-Marketing drifted to 37 to 55% with flat budgets or a single year of data, and its sampler raised warnings there. PyMC-Marketing's intervals did widen (up to ±268%), so the model was at least admitting it didn't know.
-3. **Spend that chases demand is the dangerous case.** Both tools over-credited search. Meridian put search ROAS near 4.9 against a true 2.3, and its interval missed the truth in all three runs: confident and wrong. PyMC-Marketing overstated search too (about 3.3) but kept the truth inside a wider interval. No sampler setting fixes confounding; a lift test on search does.
-4. **One dataset tells you little.** Changing only the random seed moved PyMC-Marketing's clean-data error from 6% to 53%. Treat any single MMM read as one draw, not the answer.
+1. **On clean data, PyMC-Marketing is sharper.** Typical ROAS error was 6% against Meridian's 19%, with intervals about half as wide (±31% against ±66%).
+2. **Meridian degrades more gracefully.** Its ROI priors kept typical error between 13% and 23% in every scenario. PyMC-Marketing drifted to 37 to 40% with flat budgets or a single year of data, and its sampler still raised warnings there with full-length chains (3 of 3 runs and 2 of 3). Its intervals did widen (up to ±253%), so the model was at least admitting it didn't know.
+3. **Spend that chases demand is the dangerous case.** Both tools over-credited search. Meridian put search ROAS near 4.9 against a true 2.3, and its interval missed the truth in all three runs: confident and wrong. PyMC-Marketing overstated search too (about 3.3 on average) but kept the truth inside a wider interval every time. No sampler setting fixes confounding; a lift test on search does.
+4. **One dataset tells you little.** Changing only the random seed moved PyMC-Marketing's clean-data error from 6% to 55%, and Meridian's from 16% to 39%. Treat any single MMM read as one draw, not the answer.
 
-<sub>Preview run: 3 seeds, 2 chains × 500 draws. Some PyMC-Marketing sampler warnings may come from these shorter chains; the full 4 × 1000 run will update this page.</sub>
+<sub>Full run: 3 seeds, 4 chains × 1,000 draws after 1,000 tuning steps, library-default priors, run on GitHub Actions on 15 October 2026. Every number above comes from [`results/results.csv`](results/results.csv).</sub>
 <!-- findings:end -->
+
+## Proof notebooks
+
+Shorter claim checks behind individual posts live in [`proofs/`](proofs/index.md). Each runs on simulated data with a known truth, states its limits, and can be rerun with one command.
 
 ## Results
 
